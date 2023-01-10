@@ -1,4 +1,3 @@
-//`timescale 1ns / 1ps
 `timescale 1us / 1ns
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -32,14 +31,12 @@ reg clk;
 
 // Outputs
 wire [6:0] LEDs;
-wire Start_Timer; //for visual purposes only
-wire Expired;
 wire OneHz;
-wire [2:0] state;
+wire WalkReq;
 
-wire [3:0] Value;
-wire [1:0] Interval;
 
+wire [3:0] Anode_Activate;
+wire [6:0] LED_out;
 
 TrafficLightController uut (
     .Reset(Reset), 
@@ -50,55 +47,35 @@ TrafficLightController uut (
     .Time_Value(Time_Value), 
     .clk(clk), 
     .LEDs(LEDs),
-    .Start_Timer(Start_Timer),
-    .Expired(Expired),
+    .WalkReq(WalkReq),
     .OneHz(OneHz),
-    .state(state),
-    .Value(Value),
-    .Interval(Interval)
+    .Anode_Activate(Anode_Activate),
+    .LED_out(LED_out)
 );
 
 	initial begin
 		// Initialize Inputs
-		Reset = 0;
+		Reset = 1;
 		Sensor = 0;
 		WalkRequest = 0;
 		Reprogram = 0;
 		Selector = 0;
 		Time_Value = 0;
 		clk = 0;
-
-		// Wait 100 ns for global reset to finish
+        #11 Reset=0;
 		
-		
-		//#1200050 WalkRequest <= 1;
-		//#50 WalkRequest=0;
-		//Gm only for tExt
-		//#5000000 Sensor = 1;
-		//#1500000 Sensor=0;
-		//Gs for tExt
-		//#20000000 Sensor = 1;
-		//#50000 Sensor=0;
-		//#100
-		//walk request
-		//Walk_Request = 1;
-		//#20
-		//Walk_Request = 0;
-		// Vehicle sensor request
+	
 		#19999990 Sensor = 1;
 		#30 Sensor = 0; 
-		
-		
-
-        
-		// Add stimulus here
+		#9999990 WalkRequest = 1;
+		#30 WalkRequest = 0; 
 
 	end
 	
 	initial begin
-	forever begin
-	 #5 clk = ~clk;
-	end 
+		forever begin
+	 		#5 clk = ~clk;
+		end 
 	end
 	
       

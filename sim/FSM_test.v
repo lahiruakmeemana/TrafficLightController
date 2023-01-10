@@ -47,8 +47,7 @@ FSM uut(
     .Start_Timer(Start_Timer),
     .Interval(Interval),
     .WalkReg_Reset(WalkReg_Reset),
-    .LEDs(LEDs),
-    .state(state)  
+    .LEDs(LEDs)
 );
 
 initial begin
@@ -73,12 +72,12 @@ initial begin;
     
     #1000000
     Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
     #1000000
     Expired=1;
     #50 Expired=0;
     #1000000
-    Expired=1; #50 Expired=0;
+    Expired=1; #5 Expired=0;
     #800000 WalkReq = 1;
     #1000000 WalkReq<=0;
     Sync_Sensor=1;
@@ -86,39 +85,39 @@ initial begin;
     Sync_Sensor=0;
     #1000000
     Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
     #1000000
     Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
     #1000000 Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
     
     #1000000
     Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
     
     #500000 Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
     #1000000 Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
     #1000000 Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
     #1000000 Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
     #1000000 Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
     #1000000 Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
     #1000000 Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
     #1000000 Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
     #1000000 Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
     #1000000 Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
     #1000000 Expired=1;
-    #50 Expired=0;
+    #5 Expired=0;
 end
 
 

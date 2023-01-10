@@ -1,5 +1,4 @@
 `timescale 1ns / 1ps
-//`timescale 1us / 1ns
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -23,7 +22,7 @@
 
 module Time_Parameters(
     input Sync_Reprogram,
-    input Sync_Reset,  //Reset is taken as input to reset time parameters to original values.
+    input Sync_Reset,
     input [1:0] Selector,
     input [3:0] Time_Value,
     input [1:0] Interval,

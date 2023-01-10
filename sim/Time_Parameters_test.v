@@ -60,19 +60,20 @@ initial begin
     #75
     Interval = 2'b10;
     #50;
-    
     #100
-    Sync_Reprogram = 1;
-    #5
     Selector = 2'b01;
     Time_Value = 4'b0101;
     Interval = 2'b01;
-    #55
+    #4
+    Sync_Reprogram = 1;
+  
+    
+    #10
     Sync_Reprogram = 0;
     
-    #150
+    #149
     Sync_Reset = 1;
-    #60
+    #10
     Sync_Reset = 0;
      
 end

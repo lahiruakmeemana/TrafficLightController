@@ -33,10 +33,12 @@ Divider uut(
 );
 initial begin
     clk = 0;
+    Sync_Reset = 0;
     forever begin
         #5 clk = ~clk;
     end 
 end
+
 initial begin
     #15000
     Sync_Reset = 1;

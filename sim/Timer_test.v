@@ -51,10 +51,12 @@ end
 
 initial begin
     Value = 3;
-    OneHz = 1;
+    OneHz = 0;
     Start_Timer = 1;
     #60 Start_Timer <= 0;
     Sync_Reset=0;
+    #500000
+    OneHz = 1;
     #500000
     OneHz=0;
     #500000

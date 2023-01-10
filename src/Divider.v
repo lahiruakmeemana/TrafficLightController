@@ -1,5 +1,4 @@
-//`timescale 1ns / 1ps
-`timescale 1us / 1ns
+`timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -19,31 +18,15 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
-
 module Divider(
     input clk,
-    input Sync_Reset,
+	 input Sync_Reset,
     output reg OneHz
     );
-/*
-    reg [26:0] counter = 0;
-    initial begin
-        OneHz = 1;
-    end
-    always @(posedge clk) begin
-        counter = counter +1;
-        if (counter == 50000) begin //50000 for us
-            OneHz = ~OneHz;
-            counter = 0;
-        end    
-        if (Sync_Reset) counter=0;
-    end
-    */
-    
-    parameter MAX_COUNT = 100_000_000 -1;
+	
+    parameter MAX_COUNT = 50_000_000 - 1;//50_000_000 -1;
     wire counter_en;
-    reg [26:0] counter_100M;
+    reg [28:0] counter_100M=0;
     initial begin OneHz=1;
     end
         
@@ -53,5 +36,5 @@ module Divider(
             counter_100M <=0;
             OneHz = ~OneHz; end
         else counter_100M <= counter_100M + 1'b1;
-    
+
 endmodule

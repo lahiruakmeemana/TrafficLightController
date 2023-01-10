@@ -1,5 +1,4 @@
-//`timescale 1ns / 1ps
-`timescale 1us / 1ns
+`timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -26,81 +25,80 @@ module TrafficLightController(
     input Sensor,
     input WalkRequest,
     input Reprogram,
-    input clk,
     input [1:0] Selector,
     input [3:0] Time_Value,
+    input clk,
     output [6:0] LEDs,
-    output Expired,
     output OneHz,
-    output Start_Timer,
-    output [2:0] state,
-    output [3:0] Value,  //for visual purposes only
-    output [1:0] Interval
-    /*
-    output Start_Timer,
-    output Expired,      //for visual purposes only
-    output OneHz, //for visual purposes only
-    */
+    output WalkReq,
+    //output [3:0] Value,
+    output [3:0] Anode_Activate,
+    output [6:0] LED_out
     );
-    
-wire [1:0] Interval;
-wire [3:0] Value;
-wire Sync_Sensor,Sync_Reset,Sync_Reprogram,Sync_Walk,WalkReq;
+	 
+	 wire [1:0] Interval;
+	 wire [3:0] Value;
+	 wire Sync_Reset,Sync_Sensor,Start_Timer,Sync_Reprogram,Expired,WalkReg_Reset,
+			Sync_WalkReq;
+	 
+	Divider divider (
+		.Sync_Reset(Sync_Reset),
+		.clk(clk), 
+		.OneHz(OneHz)
+	);
+	
+	FSM fsm (
+		.Sync_Sensor(Sync_Sensor), 
+		.WalkReq(WalkReq), 
+		.WalkReg_Reset(WalkReg_Reset), 
+		.LEDs(LEDs), 
+		.Interval(Interval), 
+		.Start_Timer(Start_Timer), 
+		.Expired(Expired), 
+		.Sync_Reprogram(Sync_Reprogram), 
+		.clk(clk),
+		.Sync_Reset(Sync_Reset)
+	);
+	
+	Synchronizer synchronizer (
+		.Reset(Reset), 
+		.Sensor(Sensor), 
+		.WalkRequest(WalkRequest), 
+		.Reprogram(Reprogram), 
+		.clk(clk), 
+		.Sync_Reprogram(Sync_Reprogram), 
+		.Sync_WalkReq(Sync_WalkReq), 
+		.Sync_Sensor(Sync_Sensor), 
+		.Sync_Reset(Sync_Reset)
+	);
 
 
-Divider divider(
-    .clk(clk),
-    .Sync_Reset(Sync_Reset),
-    .OneHz(OneHz)
-);
-
-FSM fsm(
-    .Sync_Sensor(Sync_Sensor),
-    .WalkReq(WalkReq),
-    .Sync_Reprogram(Sync_Reprogram),
-    .Expired(Expired),
-    .clk(clk),
-    .Sync_Reset(Sync_Reset),
-    .Start_Timer(Start_Timer),
-    .Interval(Interval),
-    .WalkReg_Reset(WalkReg_Reset),
-    .LEDs(LEDs),       // Rm,Ym,Gm,Rs,Ys,Gs,Walk
-    .state(state),
-    .WALK_REQ(WALK_REQ)
-);
-Synchronizer synchronizer(
-    .Reset(Reset),
-    .Sensor(Sensor),
-    .WalkRequest(WalkRequest),
-    .Reprogram(Reprogram),
-    .clk(clk),
-    .Sync_Reset(Sync_Reset),
-    .Sync_Sensor(Sync_Sensor),
-    .Sync_WalkReq(Sync_WalkReq),
-    .Sync_Reprogram(Sync_Reprogram)  
-);
-Time_Parameters time_parameters(
-    .Sync_Reprogram(Sync_Reprogram),
-    .Sync_Reset(Sync_Reset),  //Reset is taken as input to reset time parameters to original values.
-    .Selector(Selector),
-    .Time_Value(Time_Value),
-    .Interval(Interval),
-    .clk(clk),
-    .Value(Value)
-    );
-Timer timer(
-    .Start_Timer(Start_Timer),
-    .Value(Value),
-    .OneHz(OneHz),
-    .clk(clk),
-    .Sync_Reset(Sync_Reset),
-    .Expired(Expired)
-);
-    
-WalkReg walkreg(
-    .Sync_WalkReq(Sync_WalkReq),
-    .WalkReg_Reset(WalkReg_Reset),
-    .WalkReq(WalkReq)
-    );
+	Time_Parameters time_Parameters (
+			.Selector(Selector), 
+			.Time_Value(Time_Value), 
+			.Sync_Reprogram(Sync_Reprogram), 
+			.Interval(Interval), 
+			.clk(clk), 
+			.Value(Value),
+			.Sync_Reset(Sync_Reset)
+		);
+		
+	Timer timer (
+		.Value(Value), 
+		.OneHz(OneHz), 
+		.Start_Timer(Start_Timer),
+		.clk(clk),
+		.Expired(Expired),
+		.Sync_Reset(Sync_Reset),
+		.Anode_Activate(Anode_Activate),
+		.LED_out(LED_out)
+	);
+	
+	WalkReg walkReg (
+		.Sync_WalkReq(Sync_WalkReq), 
+		.WalkReg_Reset(WalkReg_Reset),
+		.clk(clk),  
+		.WalkReq(WalkReq)
+	);
 
 endmodule

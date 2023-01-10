@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1us / 1ns
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -24,18 +24,25 @@ module WalkReg_test;
 
 reg Sync_WalkReq;
 reg WalkReg_Reset;
-
+reg clk;
 wire WalkReq;
 
 WalkReg uut(
     .Sync_WalkReq(Sync_WalkReq),
     .WalkReg_Reset(WalkReg_Reset),
+    .clk(clk),
     .WalkReq(WalkReq)
 );
+
+initial begin
+    clk = 0;
+    forever begin
+        #5 clk = ~clk;
+    end 
+end
 initial begin
     Sync_WalkReq=0;
     WalkReg_Reset=0;
-    
     #100
     Sync_WalkReq=1;
     #10

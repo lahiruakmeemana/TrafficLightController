@@ -1,5 +1,4 @@
 `timescale 1ns / 1ps
-//`timescale 1us / 1ns
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -24,12 +23,13 @@
 module WalkReg(
     input Sync_WalkReq,
     input WalkReg_Reset,
+    input clk,
     output reg WalkReq
     );
     
-    always @ (posedge Sync_WalkReq, posedge WalkReg_Reset) begin
-        if (WalkReg_Reset) WalkReq=0;
-        if (Sync_WalkReq) WalkReq=1;
-    end
+    always@(posedge clk) begin
+		if (WalkReg_Reset) WalkReq = 0;
+		if (Sync_WalkReq) WalkReq = 1;
+    end	
     
 endmodule
